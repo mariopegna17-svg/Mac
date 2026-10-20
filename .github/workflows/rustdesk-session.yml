@@ -6,7 +6,7 @@ on:
       duration:
         description: 'Session duration (hours)'
         required: true
-        default: '2'
+        default: '3'
         type: choice
         options:
           - '1'
@@ -18,12 +18,13 @@ on:
       macos_version:
         description: 'macOS version'
         required: true
-        default: '14'
+        default: '27'
         type: choice
         options:
           - '14'
           - '15'
           - '26'
+          - '27'
       runner_size:
         description: 'Runner size (standard=Free/Pro, large/xlarge=Team/Enterprise, intel=macOS 26 only)'
         required: true
@@ -49,7 +50,7 @@ env:
 jobs:
   mac-rustdesk-session:
     name: 🦀 Mac RustDesk Session (macOS ${{ github.event.inputs.macos_version }})
-    runs-on: ${{ github.event.inputs.runner_size == 'xlarge' && format('macos-{0}-xlarge', github.event.inputs.macos_version) || github.event.inputs.runner_size == 'large' && format('macos-{0}-large', github.event.inputs.macos_version) || github.event.inputs.runner_size == 'intel' && github.event.inputs.macos_version == '26' && 'macos-26-intel' || format('macos-{0}', github.event.inputs.macos_version) }}
+    runs-on: ${{ github.event.inputs.macos_version == '27' && (github.event.inputs.runner_size == 'xlarge' && 'xcode-27-xlarge' || 'xcode-27') || github.event.inputs.runner_size == 'xlarge' && format('macos-{0}-xlarge', github.event.inputs.macos_version) || github.event.inputs.runner_size == 'large' && format('macos-{0}-large', github.event.inputs.macos_version) || github.event.inputs.runner_size == 'intel' && github.event.inputs.macos_version == '26' && 'macos-26-intel' || format('macos-{0}', github.event.inputs.macos_version) }}
     timeout-minutes: 370
     
     steps:
